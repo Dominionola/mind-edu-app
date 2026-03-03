@@ -32,88 +32,72 @@ export default function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} // Out-Expo premium easing
-      className={`fixed top-0 z-50 w-full transition-all duration-500 ${scrolled
-          ? 'bg-background/40 backdrop-blur-[24px] border-b border-foreground/5 shadow-sm'
-          : 'bg-transparent border-transparent'
-        }`}
+      className={`fixed top-0 z-50 w-full flex justify-center transition-all duration-700 pt-6 px-6 sm:px-12`}
     >
-      <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-6 md:px-12">
+      <div className={`
+        flex items-center justify-between w-full max-w-7xl h-14 sm:h-16 px-6 sm:px-10 rounded-full transition-all duration-700
+        ${scrolled
+          ? 'bg-background/60 backdrop-blur-3xl border border-white/10 shadow-lg translate-y-[-10px]'
+          : 'bg-black/40 backdrop-blur-xl border border-white/5'
+        }
+      `}>
         {/* Logo Area */}
         <Link href="/" className="flex items-center space-x-3 group outline-none">
-          <div className="bg-primary/10 p-2.5 rounded-xl group-hover:scale-105 transition-transform duration-300">
-            <Brain className="h-6 w-6 text-primary" />
+          <div className="bg-primary/20 p-2 rounded-xl group-hover:scale-110 transition-transform duration-500">
+            <Brain className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
           </div>
-          <span className="text-2xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
+          <span className={`text-xl font-bold tracking-tight transition-colors duration-500 ${scrolled ? 'text-foreground' : 'text-white'}`}>
             MindEdu Hub
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link
-            href="/modules"
-            className="text-xs font-bold uppercase tracking-widest text-foreground/60 hover:text-foreground transition-colors"
-          >
-            Modules
-          </Link>
-          <Link
-            href="/quizzes"
-            className="text-xs font-bold uppercase tracking-widest text-foreground/60 hover:text-foreground transition-colors"
-          >
-            Quizzes
-          </Link>
-          {user && (
-            <>
-              <Link
-                href="/dashboard"
-                className="text-xs font-bold uppercase tracking-widest text-foreground/60 hover:text-foreground transition-colors"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/coping"
-                className="text-xs font-bold uppercase tracking-widest text-foreground/60 hover:text-foreground transition-colors"
-              >
-                Coping
-              </Link>
-            </>
-          )}
+        <nav className="hidden md:flex items-center space-x-10">
+          {['Modules', 'Quizzes', 'Dashboard', 'Coping'].map((item) => (
+            <Link
+              key={item}
+              href={`/${item.toLowerCase()}`}
+              className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 hover:scale-105 ${scrolled ? 'text-foreground/60 hover:text-foreground' : 'text-white/60 hover:text-white'
+                }`}
+            >
+              {item}
+            </Link>
+          ))}
         </nav>
 
         {/* Desktop Auth Buttons */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-6">
           {user ? (
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 px-4 py-2 rounded-full border border-foreground/10 bg-background/50 backdrop-blur-xl">
-                <User className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-foreground/80">
-                  {user.email || 'Guest User'}
-                </span>
+            <div className="flex items-center space-x-6">
+              <div className={`px-4 py-1.5 rounded-full border text-xs font-semibold transition-all duration-500 ${scrolled ? 'bg-background/50 border-foreground/10 text-foreground' : 'bg-white/5 border-white/10 text-white'
+                }`}>
+                {user.email?.split('@')[0] || 'User'}
               </div>
               <motion.button
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={handleSignOut}
-                className="flex items-center text-sm font-bold text-foreground/60 hover:text-foreground transition-colors"
+                className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${scrolled ? 'text-foreground/60 hover:text-foreground' : 'text-white/60 hover:text-white'
+                  }`}
               >
-                <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </motion.button>
             </div>
           ) : (
             <>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-                <Link href="/auth/login" className="text-sm font-bold text-foreground/80 hover:text-foreground transition-colors px-4 py-2 rounded-full">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link href="/auth/login" className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${scrolled ? 'text-foreground/80 hover:text-foreground' : 'text-white/80 hover:text-white'
+                  }`}>
                   Log In
                 </Link>
               </motion.div>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-8 py-3 bg-primary text-white rounded-full font-bold shadow-md hover:shadow-lg transition-shadow"
+                whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(var(--primary), 0.3)' }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-2 bg-primary text-white text-[10px] font-bold uppercase tracking-widest rounded-full shadow-lg transition-all"
                 onClick={() => router.push('/auth/signup')}
               >
-                Get Started
+                Join Today
               </motion.button>
             </>
           )}
@@ -121,11 +105,11 @@ export default function Header() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2 text-foreground/60 hover:text-foreground transition-colors"
+          className={`md:hidden p-2 transition-colors ${scrolled ? 'text-foreground/60' : 'text-white/60'}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
