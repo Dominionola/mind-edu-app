@@ -1,155 +1,107 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Brain, BookOpen, Heart, TrendingUp, Users, Award } from 'lucide-react';
+import Image from 'next/image';
+import * as motion from 'framer-motion/client';
 
 export default function Home() {
-  const features = [
-    {
-      icon: BookOpen,
-      title: 'Interactive Modules',
-      description: 'Learn through engaging, bite-sized mental health education modules designed for youth.',
+  // Stagger variants for the hero content
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
     },
-    {
-      icon: Heart,
-      title: 'Safe Space',
-      description: 'A judgment-free environment where you can explore mental health topics at your own pace.',
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1], // Out-Expo
+      }
     },
-    {
-      icon: TrendingUp,
-      title: 'Track Progress',
-      description: 'Monitor your learning journey with personalized dashboards and achievement tracking.',
-    },
-    {
-      icon: Users,
-      title: 'Community Support',
-      description: 'Connect with peers and learn together in a supportive, educational community.',
-    },
-    {
-      icon: Award,
-      title: 'Gamified Learning',
-      description: 'Earn badges, maintain streaks, and stay motivated with our reward system.',
-    },
-    {
-      icon: Brain,
-      title: 'Evidence-Based',
-      description: 'All content is based on proven mental health education frameworks and research.',
-    },
-  ];
+  };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="container mx-auto px-4 py-20 md:py-32">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="flex justify-center mb-6">
-              <div className="p-4 rounded-full bg-primary/10">
-                <Brain className="h-16 w-16 text-primary" />
-              </div>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
-              Your Journey to Mental Health{' '}
-              <span className="text-primary">Wellness Starts Here</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              MindEdu Hub empowers youth with evidence-based mental health education through
-              interactive modules, quizzes, and personalized learning experiences.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Button asChild size="lg" className="text-lg">
-                <Link href="/auth/signup">Get Started Free</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="text-lg">
-                <Link href="/modules">Explore Modules</Link>
-              </Button>
-            </div>
-          </div>
+    <main className="min-h-screen bg-background flex flex-col items-center">
+      {/* SECTION 2: The Giant Hero */}
+      <section className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/Hero (2).png"
+            alt="MindEdu Hero Background"
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          {/* subtle gradient overlay to ensure text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/30" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="container relative z-10 px-6 mx-auto max-w-7xl py-24 md:py-40 flex flex-col items-center text-center">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="max-w-4xl flex flex-col items-center"
+          >
+            {/* Tagline / Label */}
+            <motion.div variants={itemVariants} className="mb-6">
+              <span className="px-4 py-1.5 rounded-full border border-foreground/10 bg-background/50 backdrop-blur-xl text-xs font-bold uppercase tracking-widest text-foreground/80">
+                Mental Health Reimagined
+              </span>
+            </motion.div>
+
+            {/* Giant Hero Headline */}
+            <motion.h1
+              variants={itemVariants}
+              className="text-6xl md:text-8xl font-bold tracking-tight leading-[0.9] text-foreground mb-8"
+            >
+              Unlock Your Resilience:{' '}
+              <br className="hidden md:block" />
+              <span className="text-primary">The Future of Youth Wellness.</span>
+            </motion.h1>
+
+            {/* Subtext */}
+            <motion.p
+              variants={itemVariants}
+              className="text-lg md:text-xl leading-relaxed text-foreground/80 max-w-2xl mb-12"
+            >
+              Evidence-based learning, interactive tools, and a safe space to grow—all in one place. Discover your personalized health intelligence.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              <Link
+                href="/auth/signup"
+                className="group relative flex items-center justify-center px-8 py-4 bg-primary text-white rounded-full font-bold shadow-lg overflow-hidden transition-all hover:shadow-xl hover:scale-105 active:scale-95"
+              >
+                <span className="relative z-10">Get Started Today</span>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+              </Link>
+
+              <Link
+                href="/modules"
+                className="flex items-center justify-center px-8 py-4 bg-background/50 backdrop-blur-xl border border-foreground/10 text-foreground rounded-full font-bold transition-all hover:bg-background/80 hover:scale-105 active:scale-95"
+              >
+                Explore Modules
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Why Choose MindEdu Hub?
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              We provide a comprehensive, engaging platform for mental health education
-              designed specifically for young people.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {features.map((feature, index) => (
-              <Card key={index} className="border-2 hover:border-primary/50 transition-colors">
-                <CardHeader>
-                  <div className="p-3 rounded-lg bg-primary/10 w-fit mb-3">
-                    <feature.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">
-                    {feature.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <Card className="max-w-4xl mx-auto bg-primary/5 border-primary/20">
-            <CardContent className="p-12 text-center space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-                Ready to Begin Your Journey?
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Join thousands of youth taking control of their mental health education.
-                Start learning today with our free modules and interactive resources.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Button asChild size="lg">
-                  <Link href="/auth/signup">Create Free Account</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link href="/auth/login">Sign In</Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t py-12 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="flex items-center space-x-2">
-              <Brain className="h-6 w-6 text-primary" />
-              <span className="font-bold text-lg">MindEdu Hub</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              © 2024 MindEdu Hub. Empowering youth through mental health education.
-            </p>
-            <div className="flex space-x-6">
-              <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">
-                About
-              </Link>
-              <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
-                Privacy
-              </Link>
-              <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">
-                Contact
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
+      {/* Future sections will go here */}
+      <div className="py-20 text-center text-foreground/40 font-bold uppercase tracking-widest text-xs">
+        [Section 3: Core Insight Visual pending...]
+      </div>
+    </main>
   );
 }
